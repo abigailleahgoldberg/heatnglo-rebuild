@@ -1,0 +1,32 @@
+# Per Phase 4 §7c — every variant prop becomes a CC select input
+# so the data editor renders a dropdown rather than a free-form text field.
+
+_inputs:
+  bg_variant:
+    type: select
+    options:
+      values: [paper, cream, ink, brand]
+
+  alignment:
+    type: select
+    options:
+      values: [left, center]
+
+  density:
+    type: select
+    options:
+      values: [compact, default, roomy]
+
+  hidden_on_mobile:
+    type: switch
+
+  # Per-CTA variant inputs — one per known CTA prop name across the block library
+  cta_primary_variant:    { type: select, options: { values: [orange, orange-outline, ink, ghost] } }
+  cta_secondary_variant:  { type: select, options: { values: [orange, orange-outline, ink, ghost] } }
+  cta_variant:            { type: select, options: { values: [orange, orange-outline, ink, ghost] } }
+
+  # Layout-specific selects
+  media_position:         { type: select, options: { values: [left, right] } }
+
+  # Logo emphasis on press strip
+  emphasis:               { type: select, options: { values: [regular, bold] } }

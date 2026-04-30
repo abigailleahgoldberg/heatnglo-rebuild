@@ -1,0 +1,59 @@
+---
+/*
+  ContentBlocks — page-builder loop with editable-region array wiring.
+  Reads request-scoped state ONCE at the page level; localizes hrefs;
+  passes pure props down to locale-agnostic block components.
+  Phase 4 §7b: blocks must NOT read Astro.url themselves.
+*/
+import HeroBlock           from '@components/blocks/HeroBlock.astro';
+import TrustStripBlock     from '@components/blocks/TrustStripBlock.astro';
+import LoveYourFireplaceBlock from '@components/blocks/LoveYourFireplaceBlock.astro';
+import BrowseLineupBlock   from '@components/blocks/BrowseLineupBlock.astro';
+import ProAdvantageBlock   from '@components/blocks/ProAdvantageBlock.astro';
+import TVWallsBlock        from '@components/blocks/TVWallsBlock.astro';
+import PressStripBlock     from '@components/blocks/PressStripBlock.astro';
+import FaqBlock            from '@components/blocks/FaqBlock.astro';
+import QuoteBlock          from '@components/blocks/QuoteBlock.astro';
+
+import { getLocale, localizeBlockHrefs } from '@lib/locale';
+
+interface Block extends Record<string, unknown> {
+  _type: string;
+}
+
+interface Props {
+  blocks: Block[];
+}
+
+const { blocks } = Astro.props;
+
+const locale = getLocale(Astro.url?.pathname);
+
+const localized = blocks.map((b) => localizeBlockHrefs(b, locale));
+---
+<div
+  data-editable="array"
+  data-prop="content_blocks"
+  data-id-key="_type"
+  data-component-key="_type"
+>
+  {localized.map((block) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const props: any = { ...block };
+    delete props._type;
+    const t = block._type as string;
+    return (
+      <div data-editable="array-item" data-component={t}>
+        {t === 'hero_block'                && <HeroBlock              {...props} />}
+        {t === 'trust_strip_block'         && <TrustStripBlock        {...props} />}
+        {t === 'love_your_fireplace_block' && <LoveYourFireplaceBlock {...props} />}
+        {t === 'browse_lineup_block'       && <BrowseLineupBlock      {...props} />}
+        {t === 'proadvantage_block'        && <ProAdvantageBlock      {...props} />}
+        {t === 'tv_walls_block'            && <TVWallsBlock           {...props} />}
+        {t === 'press_strip_block'         && <PressStripBlock        {...props} />}
+        {t === 'faq_block'                 && <FaqBlock               {...props} />}
+        {t === 'quote_block'               && <QuoteBlock             {...props} />}
+      </div>
+    );
+  })}
+</div>

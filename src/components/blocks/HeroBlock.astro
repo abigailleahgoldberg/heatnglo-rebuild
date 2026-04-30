@@ -1,0 +1,304 @@
+---
+/*
+  Component: HeroBlock
+  Mockup ref: previews/mockup-locked.html — <section class="hero">
+  Metaphor:   Hero — Headline + ZIP locator
+  Block Delivery Standard: full variant set.
+*/
+import { sectionClasses, btnClasses, type BgVariant, type Alignment, type Density, type BtnVariant } from '@lib/blockVariants';
+
+interface Props {
+  eyebrow_rating?: string;
+  heading: string;
+  heading_em?: string;
+  lede?: string;
+  cta_primary_text?: string;
+  cta_primary_href?: string;
+  cta_primary_variant?: BtnVariant;
+  cta_secondary_text?: string;
+  cta_secondary_href?: string;
+  cta_secondary_variant?: BtnVariant;
+  microcopy?: string;
+  zip_label?: string;
+  zip_placeholder?: string;
+  zip_button_text?: string;
+  zip_action?: string;
+  proximity_text?: string;
+  background_image?: string;
+  background_image_alt?: string;
+  bg_variant?: BgVariant;
+  alignment?: Alignment;
+  density?: Density;
+  hidden_on_mobile?: boolean;
+}
+
+const {
+  eyebrow_rating = '',
+  heading,
+  heading_em = '',
+  lede = '',
+  cta_primary_text = 'Get Your Savings Code',
+  cta_primary_href = '/contact/',
+  cta_primary_variant,
+  cta_secondary_text = 'Browse the Lineup',
+  cta_secondary_href = '/products/',
+  cta_secondary_variant,
+  microcopy = '',
+  zip_label = 'Find a Dealer',
+  zip_placeholder = 'ZIP code',
+  zip_button_text = 'Search →',
+  zip_action = '/where-to-buy/',
+  proximity_text = '',
+  background_image = 'https://hearthnhome.getbynder.com/transform/938c4268-c58b-4e89-be57-3740ffd4bbd9/Heat-Glo-SupremeX-Living-Room-1?io=transform:fill,width:1920,height:1080',
+  background_image_alt = '',
+  bg_variant,
+  alignment,
+  density,
+  hidden_on_mobile,
+} = Astro.props;
+
+const sectionClass = sectionClasses({ bg_variant, alignment, density, hidden_on_mobile }, 'hero');
+const primaryBtnClass = btnClasses(cta_primary_variant, 'orange');
+const secondaryBtnClass = btnClasses(cta_secondary_variant, 'ghost');
+---
+<section
+  id="hero"
+  class={sectionClass}
+  aria-labelledby="hero-heading"
+  data-component-key="hero_block"
+>
+  <div
+    class="hero__bg"
+    aria-hidden="true"
+    style={`background-image: url('${background_image}');`}
+    data-editable="image"
+    data-prop-src="background_image"
+    data-prop-alt="background_image_alt"
+  ></div>
+  <div class="hero__overlay" aria-hidden="true"></div>
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      {eyebrow_rating && (
+        <span class="hero__rating">
+          <span class="hero__rating-stars">★★★★★</span>
+          <span data-editable="text" data-prop="eyebrow_rating">{eyebrow_rating}</span>
+        </span>
+      )}
+      <h1 id="hero-heading" class="hero__h1">
+        <span data-editable="text" data-prop="heading">{heading}</span>{' '}
+        {heading_em && <em data-editable="text" data-prop="heading_em">{heading_em}</em>}
+      </h1>
+      {lede && (
+        <p class="hero__lede" data-editable="text" data-prop="lede" data-type="block">{lede}</p>
+      )}
+      <div class="hero__cta">
+        {cta_primary_text && (
+          <a href={cta_primary_href} class={primaryBtnClass} data-editable="text" data-prop="cta_primary_text">
+            {cta_primary_text}
+          </a>
+        )}
+        {cta_secondary_text && (
+          <a
+            href={cta_secondary_href}
+            class={secondaryBtnClass}
+            style="background:rgba(255,255,255,0.10);color:#fff;border:1px solid rgba(255,255,255,0.30);"
+            data-editable="text"
+            data-prop="cta_secondary_text"
+          >
+            {cta_secondary_text}
+          </a>
+        )}
+      </div>
+      {microcopy && (
+        <p class="hero__microcopy" data-editable="text" data-prop="microcopy">{microcopy}</p>
+      )}
+      <form class="hero__zip" action={zip_action} method="get">
+        <span class="hero__zip-label" data-editable="text" data-prop="zip_label">{zip_label}</span>
+        <input
+          class="hero__zip-input"
+          type="text"
+          name="zip"
+          inputmode="numeric"
+          pattern="[0-9A-Za-z]{5,7}"
+          maxlength="7"
+          placeholder={zip_placeholder}
+          required
+          aria-label="ZIP or postal code"
+        />
+        <button class="hero__zip-btn" type="submit" data-editable="text" data-prop="zip_button_text">
+          {zip_button_text}
+        </button>
+      </form>
+      {proximity_text && (
+        <p class="hero__proximity">
+          <span class="hero__proximity-dot" aria-hidden="true"></span>
+          <span data-editable="text" data-prop="proximity_text">{proximity_text}</span>
+        </p>
+      )}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 540px;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    color: #fff;
+  }
+  @media (min-width: 769px) { .hero { min-height: 660px; } }
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center 40%;
+    z-index: 0;
+  }
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.10) 40%, rgba(0,0,0,0.78) 100%),
+      linear-gradient(110deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.0) 60%);
+    z-index: 1;
+  }
+  .hero__inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 60px 0 48px;
+  }
+  @media (min-width: 769px) { .hero__inner { padding: 100px 0 60px; } }
+
+  .hero__copy { max-width: 620px; }
+
+  .hero__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--display);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.92);
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.20);
+    padding: 8px 14px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+    letter-spacing: 0.02em;
+  }
+  .hero__rating-stars { color: #ffb84a; letter-spacing: 0.05em; }
+
+  .hero__h1 {
+    font-family: var(--display);
+    font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.022em;
+    margin: 0 0 18px;
+    color: #fff;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.45);
+  }
+  .hero__h1 em { font-style: normal; color: #ffb84a; }
+
+  .hero__lede {
+    font-size: 16.5px;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.92);
+    margin: 0 0 28px;
+    max-width: 56ch;
+    font-weight: 400;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.55);
+  }
+
+  .hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 22px;
+  }
+
+  .hero__microcopy {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.78);
+    margin: 14px 0 0;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+  }
+
+  .hero__zip {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(10px);
+    padding: 6px 6px 6px 18px;
+    border-radius: 999px;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+    flex-wrap: wrap;
+    max-width: 100%;
+    margin-top: 18px;
+  }
+  .hero__zip-label {
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .hero__zip-input {
+    flex: 1;
+    min-width: 100px;
+    background: transparent;
+    border: none;
+    padding: 8px 6px;
+    color: var(--ink);
+    font-size: 15px;
+    font-family: var(--body);
+    outline: none;
+  }
+  .hero__zip-input::placeholder { color: var(--steel-2); }
+  .hero__zip-btn {
+    background: var(--orange-2);
+    color: #fff;
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    padding: 11px 18px;
+    border-radius: 999px;
+    transition: background 0.18s ease;
+    border: none;
+    cursor: pointer;
+  }
+  .hero__zip-btn:hover { background: var(--orange-3); }
+
+  .hero__proximity {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.86);
+    margin: 12px 0 0;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+  }
+  .hero__proximity-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #5dd97c;
+    box-shadow: 0 0 0 4px rgba(93,217,124,0.22), 0 0 8px rgba(93,217,124,0.6);
+  }
+</style>

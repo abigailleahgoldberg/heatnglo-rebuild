@@ -1,0 +1,77 @@
+---
+/*
+  Component: TVWallsBlock
+  Mockup ref: <section class="feature" id="inspiration">
+  Metaphor:   Six TV Wall Designs Editorial
+*/
+import { sectionClasses, btnClasses, type BgVariant, type Alignment, type Density, type BtnVariant } from '@lib/blockVariants';
+
+interface Props {
+  eyebrow?: string;
+  heading: string;
+  heading_em?: string;
+  paragraph_1?: string;
+  cta_text?: string;
+  cta_href?: string;
+  cta_variant?: BtnVariant;
+  media_image?: string;
+  media_image_alt?: string;
+  bg_variant?: BgVariant;
+  alignment?: Alignment;
+  density?: Density;
+  hidden_on_mobile?: boolean;
+}
+
+const {
+  eyebrow = 'Editorial · 8 min read',
+  heading,
+  heading_em = '',
+  paragraph_1 = '',
+  cta_text = 'Get Inspired',
+  cta_href = '/inspiration/six-tv-wall-designs/',
+  cta_variant,
+  media_image = '',
+  media_image_alt = '',
+  bg_variant,
+  alignment,
+  density,
+  hidden_on_mobile,
+} = Astro.props;
+
+const sectionClass = sectionClasses({ bg_variant, alignment, density, hidden_on_mobile }, 'feature');
+const btnClass = btnClasses(cta_variant, 'ink');
+---
+<section id="inspiration" class={sectionClass} aria-labelledby="tv-walls-heading">
+  <div class="container">
+    <div class="feature__row">
+      <div class="feature__copy">
+        {eyebrow && (
+          <span class="feature__eyebrow" data-editable="text" data-prop="eyebrow">{eyebrow}</span>
+        )}
+        <h2 id="tv-walls-heading" class="feature__title">
+          <span data-editable="text" data-prop="heading">{heading}</span>{' '}
+          {heading_em && <em data-editable="text" data-prop="heading_em">{heading_em}</em>}
+        </h2>
+        <div class="h2-rule"></div>
+        {paragraph_1 && <p data-editable="text" data-prop="paragraph_1" data-type="block">{paragraph_1}</p>}
+        {cta_text && (
+          <a class={btnClass} href={cta_href} data-editable="text" data-prop="cta_text">{cta_text}</a>
+        )}
+      </div>
+      {media_image && (
+        <div class="feature__media">
+          <img
+            src={media_image}
+            alt={media_image_alt}
+            loading="lazy"
+            width="900"
+            height="675"
+            data-editable="image"
+            data-prop-src="media_image"
+            data-prop-alt="media_image_alt"
+          />
+        </div>
+      )}
+    </div>
+  </div>
+</section>

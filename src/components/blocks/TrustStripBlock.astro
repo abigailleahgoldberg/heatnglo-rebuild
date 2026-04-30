@@ -1,0 +1,112 @@
+---
+/*
+  Component: TrustStripBlock
+  Mockup ref: <section class="trust">
+  Metaphor:   Heritage Trust Strip
+*/
+import { sectionClasses, type BgVariant, type Alignment, type Density } from '@lib/blockVariants';
+
+interface TrustItem {
+  icon: string;       // Emoji or short glyph
+  num: string;
+  num_unit?: string;
+  label: string;
+}
+
+interface Props {
+  items?: TrustItem[];
+  bg_variant?: BgVariant;
+  alignment?: Alignment;
+  density?: Density;
+  hidden_on_mobile?: boolean;
+}
+
+const {
+  items = [],
+  bg_variant,
+  alignment,
+  density,
+  hidden_on_mobile,
+} = Astro.props;
+
+const sectionClass = sectionClasses({ bg_variant, alignment, density, hidden_on_mobile }, 'trust');
+---
+<section class={sectionClass} aria-label="Heritage and reach">
+  <div class="container">
+    <div class="trust__row" data-editable="array" data-prop="items">
+      {items.map((item) => (
+        <div class="trust__item" data-editable="array-item">
+          <span class="trust__icon" aria-hidden="true" data-editable="text" data-prop="icon">{item.icon}</span>
+          <div>
+            <div class="trust__num">
+              <span data-editable="text" data-prop="num">{item.num}</span>
+              {item.num_unit && <span class="trust__num-unit" data-editable="text" data-prop="num_unit">{item.num_unit}</span>}
+            </div>
+            <div class="trust__label" data-editable="text" data-prop="label">{item.label}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .trust {
+    background: var(--bone);
+    padding: 36px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .trust__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+  @media (min-width: 769px) {
+    .trust__row { grid-template-columns: repeat(4, 1fr); gap: 0; }
+  }
+  .trust__item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 18px;
+    border-right: 1px solid var(--rule);
+  }
+  .trust__row > .trust__item:last-child { border-right: none; }
+  @media (max-width: 768px) {
+    .trust__item { border-right: none; padding: 0; }
+  }
+  .trust__icon {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--orange-2);
+    font-size: 18px;
+    font-family: var(--display);
+    border-radius: 50%;
+    background: var(--orange-soft);
+    flex-shrink: 0;
+  }
+  .trust__num {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .trust__num-unit {
+    font-size: 12px;
+    color: var(--steel);
+    margin-left: 2px;
+    font-weight: 500;
+  }
+  .trust__label {
+    font-family: var(--display);
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--steel);
+    letter-spacing: 0.02em;
+    margin-top: 2px;
+  }
+</style>

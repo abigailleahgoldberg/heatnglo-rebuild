@@ -1,0 +1,83 @@
+---
+/*
+  Component: PressStripBlock
+  Mockup ref: <section class="press">
+  Metaphor:   As Featured In
+*/
+import { sectionClasses, type BgVariant, type Alignment, type Density } from '@lib/blockVariants';
+
+interface PressLogo {
+  name: string;
+  emphasis?: 'regular' | 'bold';
+}
+
+interface Props {
+  lead_text?: string;
+  logos?: PressLogo[];
+  bg_variant?: BgVariant;
+  alignment?: Alignment;
+  density?: Density;
+  hidden_on_mobile?: boolean;
+}
+
+const {
+  lead_text = 'As featured in',
+  logos = [],
+  bg_variant = 'cream',
+  alignment = 'center',
+  density = 'compact',
+  hidden_on_mobile,
+} = Astro.props;
+
+const sectionClass = sectionClasses({ bg_variant, alignment, density, hidden_on_mobile }, 'press');
+---
+<section class={sectionClass} aria-label="Press features">
+  <div class="container">
+    {lead_text && (
+      <p class="press__lead" data-editable="text" data-prop="lead_text">{lead_text}</p>
+    )}
+    <div class="press__row" data-editable="array" data-prop="logos">
+      {logos.map((logo) => (
+        <span
+          class:list={['press__logo', logo.emphasis === 'bold' && 'press__logo--bold']}
+          data-editable="array-item"
+        >
+          <span data-editable="text" data-prop="name">{logo.name}</span>
+        </span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .press { padding: 36px 0; }
+  .press__lead {
+    font-family: var(--display);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin: 0 0 14px;
+  }
+  .press__row {
+    display: flex;
+    gap: 24px 36px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  .press__logo {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--steel);
+    letter-spacing: 0.04em;
+    opacity: 0.8;
+  }
+  .press__logo--bold {
+    font-weight: 700;
+    color: var(--ink);
+    opacity: 1;
+  }
+</style>
