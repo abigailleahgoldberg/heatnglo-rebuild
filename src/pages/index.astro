@@ -1,12 +1,39 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import Container from '@components/ui/Container.astro';
 ---
 <BaseLayout
   title="Heat & Glo — Manufactured Fireplaces, Inserts & Outdoor Fire Features"
   description="Gas, electric, wood, and outdoor fireplaces from Heat & Glo. Find an authorized dealer near you and schedule a free in-home consultation."
+  noIndex={true}
 >
-  <main class="max-w-page mx-auto px-4 py-16">
-    <h1 class="text-4xl font-bold mb-4">Phase 2 scaffold complete.</h1>
-    <p class="text-gray-700">Phase 3 rebuilds this from the approved mockup at <code>/index.html</code>.</p>
-  </main>
+  <Container as="section" class="home-placeholder">
+    <h1>Phase 3 scaffold — layout + global components are live.</h1>
+    <p>Phase 4 decomposes the approved mockup's body sections (hero, browse-the-lineup, ProAdvantage, FAQ, etc.) into block components and wires them in here.</p>
+    <p>Header + Footer + Top Utility Strip + Sticky CTA are inherited from <code>BaseLayout.astro</code>. Locale picker is wired to all 4 routes.</p>
+  </Container>
 </BaseLayout>
+
+<style>
+  .home-placeholder {
+    padding: 80px 0 120px;
+  }
+  .home-placeholder h1 {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+  .home-placeholder p {
+    color: var(--ink-2);
+    margin-bottom: 12px;
+    max-width: 60ch;
+  }
+  .home-placeholder code {
+    background: var(--bone);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: ui-monospace, monospace;
+    font-size: 0.875em;
+  }
+</style>

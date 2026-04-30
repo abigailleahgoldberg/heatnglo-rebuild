@@ -1,0 +1,191 @@
+---
+import footerData from '@data/footer.json';
+import { detectLocale, type Locale } from '@lib/localeUrls';
+
+const pathname = Astro.url.pathname;
+const currentLocale: Locale = detectLocale(pathname);
+const localePrefix = currentLocale === 'en' ? '' : '/' + currentLocale;
+
+const year = new Date().getFullYear();
+
+const FOOTER_LABELS: Record<Locale, { engineered: string; contact: string; copyright: string; optimized: string }> = {
+  en: {
+    engineered: 'Engineered in Lake City, Minnesota since 1975.',
+    contact:    'Contact:',
+    copyright:  `© ${year} Heat & Glo. All rights reserved.`,
+    optimized:  'Optimized by The Voice of Cash AI Platform',
+  },
+  es: {
+    engineered: 'Diseñado en Lake City, Minnesota desde 1975.',
+    contact:    'Contacto:',
+    copyright:  `© ${year} Heat & Glo. Todos los derechos reservados.`,
+    optimized:  'Optimizado por The Voice of Cash AI Platform',
+  },
+  'en-ca': {
+    engineered: 'Engineered in Lake City, Minnesota since 1975.',
+    contact:    'Contact:',
+    copyright:  `© ${year} Heat & Glo. All rights reserved.`,
+    optimized:  'Optimized by The Voice of Cash AI Platform',
+  },
+  'fr-ca': {
+    engineered: 'Conçu à Lake City, Minnesota depuis 1975.',
+    contact:    'Contact :',
+    copyright:  `© ${year} Heat & Glo. Tous droits réservés.`,
+    optimized:  'Optimisé par The Voice of Cash AI Platform',
+  },
+};
+
+const f = FOOTER_LABELS[currentLocale];
+
+function localizeHref(href: string): string {
+  if (!href.startsWith('/') || currentLocale === 'en') return href;
+  return localePrefix + href;
+}
+---
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand-block">
+        <img
+          class="footer__brand-logo"
+          src="https://cdn.sanity.io/images/upnkuzzs/production/c8d18cd6ba09806e42f638b4a86432c4b6582662-225x40.svg"
+          alt="Heat & Glo"
+          width="225"
+          height="40"
+        />
+        <div class="footer__social">
+          <a href={footerData.social.facebook}  aria-label="Facebook"  target="_blank" rel="noopener noreferrer">f</a>
+          <a href={footerData.social.instagram} aria-label="Instagram" target="_blank" rel="noopener noreferrer">IG</a>
+          <a href={footerData.social.youtube}   aria-label="YouTube"   target="_blank" rel="noopener noreferrer">YT</a>
+          <a href={footerData.social.linkedin}  aria-label="LinkedIn"  target="_blank" rel="noopener noreferrer">in</a>
+        </div>
+        <p class="footer__contact">
+          {f.engineered}<br />
+          {f.contact} <a href={`tel:${footerData.company.phone.replace(/[^0-9]/g, '')}`}>{footerData.company.phone}</a>
+        </p>
+      </div>
+
+      {footerData.columns.map((col) => (
+        <div class="footer__col">
+          <h4>{col.heading}</h4>
+          <ul>
+            {col.links.map((link) => (
+              <li><a href={localizeHref(link.href)}>{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="footer__bottom">
+      <p>{f.copyright}</p>
+      <ul class="footer__legal">
+        {footerData.legal.map((l) => (
+          <li><a href={localizeHref(l.href)}>{l.label}</a></li>
+        ))}
+      </ul>
+      <p class="footer__optimized">{f.optimized}</p>
+    </div>
+  </div>
+</footer>
+
+<style is:global>
+  .site-footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.86);
+    padding: 56px 0 28px;
+    margin-top: 80px;
+    font-size: 14px;
+  }
+  .site-footer a { color: rgba(255,255,255,0.86); }
+  .site-footer a:hover { color: #ffd0a8; }
+
+  .footer__top {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  @media (min-width: 769px) {
+    .footer__top { grid-template-columns: 1.4fr 1fr 1fr 1fr; }
+  }
+
+  .footer__brand-logo { height: 38px; width: auto; filter: brightness(0) invert(1); }
+
+  .footer__social { display: flex; gap: 14px; margin: 18px 0 14px; }
+  .footer__social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .footer__social a:hover { background: var(--orange-2); border-color: var(--orange-2); color: #fff; }
+
+  .footer__contact {
+    line-height: 1.6;
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+    margin: 0;
+  }
+  .footer__contact a { color: #fff; font-weight: 600; }
+
+  .footer__col h4 {
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #fff;
+    margin: 0 0 14px;
+  }
+  .footer__col ul { list-style: none; margin: 0; padding: 0; }
+  .footer__col li { margin-bottom: 8px; font-size: 13.5px; }
+
+  .footer__bottom {
+    padding-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+    font-size: 12.5px;
+  }
+  @media (min-width: 769px) {
+    .footer__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      text-align: left;
+      gap: 18px;
+    }
+  }
+  .footer__legal {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .footer__legal li { display: inline; }
+  .footer__optimized {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 11.5px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+</style>

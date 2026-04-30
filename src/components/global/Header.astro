@@ -1,0 +1,233 @@
+---
+import { detectLocale, localeUrl, type Locale } from '@lib/localeUrls';
+import navData from '@data/nav.json';
+
+const pathname = Astro.url.pathname;
+const currentLocale: Locale = detectLocale(pathname);
+
+interface NavItem { label: string; href: string; }
+const navMap: Record<Locale, NavItem[]> = {
+  en:      navData.main,
+  es:      navData.es_main,
+  'en-ca': navData.en_ca_main,
+  'fr-ca': navData.fr_ca_main,
+};
+
+const UTIL_LABELS: Record<Locale, { search: string; dealer: string; consult: string; menu: string }> = {
+  en:      { search: 'Search', dealer: 'Find a Dealer', consult: 'Request Consultation', menu: 'Menu' },
+  es:      { search: 'Buscar', dealer: 'Distribuidor',  consult: 'Solicitar Consulta',   menu: 'Menú' },
+  'en-ca': { search: 'Search', dealer: 'Find a Dealer', consult: 'Request Consultation', menu: 'Menu' },
+  'fr-ca': { search: 'Recherche', dealer: 'Détaillant', consult: 'Consultation',         menu: 'Menu' },
+};
+
+const items = navMap[currentLocale];
+const u = UTIL_LABELS[currentLocale];
+
+const localePrefix = currentLocale === 'en' ? '' : '/' + currentLocale;
+---
+<header class="header" role="banner">
+  <div class="container">
+    <div class="header__main">
+      <a href={localeUrl(currentLocale, '/')} aria-label="Heat & Glo home" class="header__brand">
+        <img
+          class="brand-logo"
+          src="https://cdn.sanity.io/images/upnkuzzs/production/c8d18cd6ba09806e42f638b4a86432c4b6582662-225x40.svg"
+          alt="Heat & Glo"
+          width="225"
+          height="40"
+        />
+      </a>
+
+      <div class="header__util">
+        <a href={localePrefix + '/where-to-buy/'} aria-label={u.search}>🔍 {u.search}</a>
+        <a href={localePrefix + '/where-to-buy/'} aria-label={u.dealer}>📍 {u.dealer}</a>
+        <a href="tel:8884273973" aria-label="Call 888-427-3973">📞 888-427-3973</a>
+        <a class="btn btn--orange-outline" href={localePrefix + '/contact/'}>{u.consult}</a>
+        <button
+          class="menu-btn"
+          id="menu-btn"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          type="button"
+        >
+          ☰ {u.menu}
+        </button>
+      </div>
+    </div>
+
+    <nav class="nav" aria-label="Primary">
+      <ul class="nav__list">
+        {items.map((item, idx) => {
+          const isPartner = idx === items.length - 1 && item.label.toLowerCase().includes('stellar');
+          const isActive = pathname === item.href;
+          return (
+            <li>
+              <a
+                href={item.href}
+                class:list={[isPartner && 'nav__partner', isActive && 'is-active']}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {item.label}{isPartner ? ' →' : ''}
+              </a>
+            </li>
+          );
+        })}
+        <li>
+          <a class="nav__partner" href="https://www.stellarfireplaces.com/" target="_blank" rel="noopener noreferrer">
+            Stellar by Heat &amp; Glo →
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="mobile-menu" id="mobile-menu" hidden>
+      <ul>
+        {items.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+        <li><a href={localePrefix + '/where-to-buy/'}>{u.dealer}</a></li>
+        <li><a href={localePrefix + '/contact/'}>{u.consult}</a></li>
+        <li><a href="tel:8884273973">📞 888-427-3973</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<style is:global>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .header__main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    gap: 18px;
+  }
+  .header__brand { flex-shrink: 0; }
+  .brand-logo {
+    height: 36px;
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .header__util { display: flex; gap: 14px; align-items: center; }
+  .header__util > a {
+    display: none;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink-2);
+    align-items: center;
+    gap: 6px;
+  }
+  @media (min-width: 769px) { .header__util > a { display: inline-flex; } }
+  .header__util > a:not(.btn):hover { color: var(--orange-2); }
+
+  .menu-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1.5px solid var(--rule);
+    padding: 9px 13px;
+    border-radius: 4px;
+    color: var(--ink);
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--paper);
+  }
+  @media (min-width: 1025px) { .menu-btn { display: none; } }
+
+  .nav {
+    display: none;
+    border-top: 1px solid var(--rule);
+    padding: 14px 0;
+  }
+  @media (min-width: 1025px) { .nav { display: block; } }
+
+  .nav__list {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav__list > li > a {
+    font-family: var(--display);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .nav__list > li > a:hover { color: var(--orange); border-bottom-color: var(--orange); }
+  .nav__list > li > a.is-active { color: var(--orange); border-bottom-color: var(--orange); }
+
+  .nav__partner {
+    margin-left: auto;
+    color: var(--steel) !important;
+    font-style: italic;
+    font-size: 12.5px !important;
+  }
+
+  .mobile-menu {
+    border-top: 1px solid var(--rule);
+    padding: 16px 0;
+    background: var(--paper);
+  }
+  .mobile-menu[hidden] { display: none; }
+  .mobile-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .mobile-menu a {
+    display: block;
+    padding: 12px 4px;
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule-2);
+  }
+  .mobile-menu a:hover { color: var(--orange-2); }
+</style>
+
+<script>
+  (function () {
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', () => {
+      const isOpen = !menu.hasAttribute('hidden');
+      if (isOpen) {
+        menu.setAttribute('hidden', '');
+        btn.setAttribute('aria-expanded', 'false');
+      } else {
+        menu.removeAttribute('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+    menu.addEventListener('click', (e) => {
+      if (e.target instanceof HTMLAnchorElement) {
+        menu.setAttribute('hidden', '');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+</script>

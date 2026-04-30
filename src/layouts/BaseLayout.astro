@@ -1,62 +1,97 @@
 ---
 import '../styles/global.css';
+import TopUtilityStrip from '@components/global/TopUtilityStrip.astro';
+import Header from '@components/global/Header.astro';
+import Footer from '@components/global/Footer.astro';
+import StickyCta from '@components/global/StickyCta.astro';
+import { allLocaleAlternates, detectLocale, LOCALE_HREFLANG } from '@lib/localeUrls';
 
 interface Props {
   title: string;
   description: string;
-  canonical?: string;
   ogImage?: string;
-  locale?: string;
+  ogType?: string;
+  canonicalUrl?: string;
+  noIndex?: boolean;
+  structuredData?: object;
+  hideStickyCta?: boolean;
 }
 
 const {
   title,
   description,
-  canonical,
   ogImage = 'https://heatnglo.com/og-default.jpg',
-  locale = Astro.currentLocale ?? 'en',
+  ogType = 'website',
+  canonicalUrl,
+  noIndex = false,
+  structuredData,
+  hideStickyCta = false,
 } = Astro.props;
 
-const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+const pathname = Astro.url.pathname;
+const currentLocale = detectLocale(pathname);
+const htmlLang = LOCALE_HREFLANG[currentLocale];
+const canonical = canonicalUrl ?? new URL(pathname, Astro.site).toString();
+const alternates = allLocaleAlternates(pathname);
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={htmlLang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalUrl} />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
 
-    <link rel="alternate" hreflang="en-US"   href={`https://heatnglo.com${Astro.url.pathname.replace(/^\/(es|en-ca|fr-ca)/, '')}`} />
-    <link rel="alternate" hreflang="es-US"   href={`https://heatnglo.com/es${Astro.url.pathname.replace(/^\/(es|en-ca|fr-ca)/, '')}`} />
-    <link rel="alternate" hreflang="en-CA"   href={`https://heatnglo.com/en-ca${Astro.url.pathname.replace(/^\/(es|en-ca|fr-ca)/, '')}`} />
-    <link rel="alternate" hreflang="fr-CA"   href={`https://heatnglo.com/fr-ca${Astro.url.pathname.replace(/^\/(es|en-ca|fr-ca)/, '')}`} />
-    <link rel="alternate" hreflang="x-default" href={`https://heatnglo.com${Astro.url.pathname.replace(/^\/(es|en-ca|fr-ca)/, '')}`} />
+    {alternates.map((a) => (
+      <link rel="alternate" hreflang={a.hreflang} href={a.href} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={`https://heatnglo.com${pathname.replace(/^\/(es|en-ca|fr-ca)/, '')}`} />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={htmlLang.replace('-', '_')} />
+    <meta property="og:site_name" content="Heat & Glo" />
+
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <meta name="theme-color" content="#0e0e0e" />
+    <meta name="theme-color" content="#1a1a1a" />
     <meta name="color-scheme" content="light" />
+    <meta name="format-detection" content="telephone=yes" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
     />
+
+    {structuredData && (
+      <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    )}
   </head>
   <body>
-    <slot />
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <TopUtilityStrip />
+    <Header />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+    {!hideStickyCta && <StickyCta />}
 
     <script>
       if (typeof window !== 'undefined' && (window as Window & { inEditorMode?: boolean }).inEditorMode) {

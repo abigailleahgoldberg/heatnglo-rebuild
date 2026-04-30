@@ -1,0 +1,85 @@
+---
+import { detectLocale, type Locale } from '@lib/localeUrls';
+
+const pathname = Astro.url.pathname;
+const currentLocale: Locale = detectLocale(pathname);
+const localePrefix = currentLocale === 'en' ? '' : '/' + currentLocale;
+
+const COPY: Record<Locale, { browse: string; dealer: string; phone: string; consult: string }> = {
+  en:      { browse: 'Browse',     dealer: 'Find a Dealer',  phone: '📞 888-427-3973', consult: 'Schedule Free Consultation' },
+  es:      { browse: 'Explorar',   dealer: 'Distribuidor',   phone: '📞 888-427-3973', consult: 'Consulta Gratuita' },
+  'en-ca': { browse: 'Browse',     dealer: 'Find a Dealer',  phone: '📞 888-427-3973', consult: 'Schedule Free Consultation' },
+  'fr-ca': { browse: 'Parcourir',  dealer: 'Détaillant',     phone: '📞 888-427-3973', consult: 'Consultation gratuite' },
+};
+
+const c = COPY[currentLocale];
+---
+<div class="deskcta" id="deskcta" aria-label="Quick actions">
+  <a class="deskcta__phone" href="tel:8884273973">{c.phone}</a>
+  <a class="btn btn--orange" href={localePrefix + '/contact/'}>{c.consult}</a>
+</div>
+
+<div class="stickycta" aria-label="Quick actions">
+  <a class="btn btn--ghost" href={localePrefix + '/products/'}>{c.browse}</a>
+  <a class="btn btn--orange" href={localePrefix + '/where-to-buy/'}>{c.dealer}</a>
+</div>
+
+<style is:global>
+  .deskcta {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 40;
+    background: var(--paper);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.18);
+    border-radius: 999px;
+    padding: 8px 8px 8px 22px;
+    align-items: center;
+    gap: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(8px);
+  }
+  .deskcta.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  @media (min-width: 769px) { .deskcta { display: flex; } }
+  .deskcta__phone {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+  }
+
+  .stickycta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    display: flex;
+    gap: 8px;
+    padding: 12px 14px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--rule);
+  }
+  .stickycta .btn { flex: 1; justify-content: center; padding: 12px 14px; font-size: 12px; }
+  @media (min-width: 769px) { .stickycta { display: none; } }
+</style>
+
+<script>
+  (function () {
+    const el = document.getElementById('deskcta');
+    if (!el) return;
+    const target = el;
+    const threshold = 600;
+    function tick() {
+      if (window.scrollY > threshold) target.classList.add('visible');
+      else target.classList.remove('visible');
+    }
+    window.addEventListener('scroll', tick, { passive: true });
+    tick();
+  })();
+</script>

@@ -1,13 +1,20 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import Container from '@components/ui/Container.astro';
 ---
 <BaseLayout
   title="Heat & Glo — Chimeneas, insertos y elementos de fuego para exteriores"
   description="Chimeneas a gas, eléctricas, de leña y para exteriores. Encuentra un distribuidor autorizado y programa una consulta gratuita."
-  locale="es"
+  noIndex={true}
 >
-  <main class="max-w-page mx-auto px-4 py-16">
-    <h1 class="text-4xl font-bold mb-4">Phase 2 scaffold (es-US).</h1>
-    <p class="text-gray-700">Fase 3 reconstruirá esta página desde el mockup aprobado.</p>
-  </main>
+  <Container as="section" class="home-placeholder">
+    <h1>Phase 3 scaffold (es-US).</h1>
+    <p>La fase 4 reconstruirá las secciones del cuerpo desde el mockup aprobado.</p>
+  </Container>
 </BaseLayout>
+
+<style>
+  .home-placeholder { padding: 80px 0 120px; }
+  .home-placeholder h1 { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; margin-bottom: 14px; color: var(--ink); }
+  .home-placeholder p { color: var(--ink-2); max-width: 60ch; }
+</style>
