@@ -1,0 +1,38 @@
+{
+  "main": [
+    { "label": "Products",          "href": "/products/" },
+    { "label": "Inspiration",       "href": "/inspiration/" },
+    { "label": "Where to Buy",      "href": "/where-to-buy/" },
+    { "label": "Pro",               "href": "/pro/" },
+    { "label": "Owner Resources",   "href": "/owner-resources/" },
+    { "label": "Blog",              "href": "/blog/" },
+    { "label": "About",             "href": "/about/" }
+  ],
+  "es_main": [
+    { "label": "Productos",                      "href": "/es/products/" },
+    { "label": "Inspiración",                    "href": "/es/inspiration/" },
+    { "label": "Dónde Comprar",                  "href": "/es/where-to-buy/" },
+    { "label": "Pro",                            "href": "/es/pro/" },
+    { "label": "Recursos para Propietarios",     "href": "/es/owner-resources/" },
+    { "label": "Blog",                           "href": "/es/blog/" },
+    { "label": "Acerca de",                      "href": "/es/about/" }
+  ],
+  "en_ca_main": [
+    { "label": "Products",          "href": "/en-ca/products/" },
+    { "label": "Inspiration",       "href": "/en-ca/inspiration/" },
+    { "label": "Where to Buy",      "href": "/en-ca/where-to-buy/" },
+    { "label": "Pro",               "href": "/en-ca/pro/" },
+    { "label": "Owner Resources",   "href": "/en-ca/owner-resources/" },
+    { "label": "Blog",              "href": "/en-ca/blog/" },
+    { "label": "About",             "href": "/en-ca/about/" }
+  ],
+  "fr_ca_main": [
+    { "label": "Produits",                       "href": "/fr-ca/products/" },
+    { "label": "Inspiration",                    "href": "/fr-ca/inspiration/" },
+    { "label": "Où acheter",                     "href": "/fr-ca/where-to-buy/" },
+    { "label": "Pro",                            "href": "/fr-ca/pro/" },
+    { "label": "Ressources pour propriétaires",  "href": "/fr-ca/owner-resources/" },
+    { "label": "Blogue",                         "href": "/fr-ca/blog/" },
+    { "label": "À propos",                       "href": "/fr-ca/about/" }
+  ]
+}

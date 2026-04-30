@@ -1,0 +1,49 @@
+{
+  "company": {
+    "name": "Heat & Glo",
+    "parent": "Hearth & Home Technologies",
+    "address": "20802 Kensington Blvd, Lake City, MN 55041",
+    "phone": "888-427-3973",
+    "founded": 1975
+  },
+  "columns": [
+    {
+      "heading": "Products",
+      "links": [
+        { "label": "Gas Fireplaces",      "href": "/products/gas-fireplaces/" },
+        { "label": "Electric Fireplaces", "href": "/products/electric-fireplaces/" },
+        { "label": "Wood Fireplaces",     "href": "/products/wood-fireplaces/" },
+        { "label": "Outdoor Fireplaces",  "href": "/products/outdoor-fireplaces/" }
+      ]
+    },
+    {
+      "heading": "For Pros",
+      "links": [
+        { "label": "ProAdvantage Trade Program", "href": "/pro/proadvantage/" },
+        { "label": "BIM Library",                "href": "/pro/bim-library/" },
+        { "label": "AIA Continuing Ed",          "href": "/pro/aia-continuing-education/" },
+        { "label": "Designers on Fire",          "href": "/pro/designers-on-fire/" }
+      ]
+    },
+    {
+      "heading": "Owners",
+      "links": [
+        { "label": "Manuals",        "href": "/owner-resources/manuals/" },
+        { "label": "Parts",          "href": "/owner-resources/parts/" },
+        { "label": "Safety Screens", "href": "/owner-resources/safety-screens/" },
+        { "label": "Recalls",        "href": "/owner-resources/recalls/" }
+      ]
+    }
+  ],
+  "social": {
+    "instagram": "https://www.instagram.com/heatnglo/",
+    "facebook":  "https://www.facebook.com/HeatandGlo/",
+    "youtube":   "https://www.youtube.com/user/HeatnGloFireplace",
+    "linkedin":  "https://www.linkedin.com/company/heat-&-glo"
+  },
+  "legal": [
+    { "label": "Privacy",       "href": "/privacy/" },
+    { "label": "Terms",         "href": "/terms/" },
+    { "label": "Accessibility", "href": "/accessibility/" }
+  ]
+}

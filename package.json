@@ -1,0 +1,36 @@
+{
+  "name": "heatnglo-rebuild",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check --minimumFailingSeverity error",
+    "sync": "astro sync"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.4.0",
+    "@astrojs/tailwind": "^6.0.0",
+    "@astrojs/vercel": "^9.0.0",
+    "@cloudcannon/editable-regions": "^0.0.14",
+    "astro": "^5.16.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^3.4.13"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@cloudcannon/cli": "^0.0.3",
+    "@types/node": "^25.6.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "pagefind": "^1.1.1",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

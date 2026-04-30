@@ -1,0 +1,17 @@
+{
+  "primary": {
+    "label_en":    "Find a Dealer",
+    "label_es":    "Encuentra un Distribuidor",
+    "label_en-ca": "Find a Dealer",
+    "label_fr-ca": "Trouver un détaillant",
+    "href":        "/where-to-buy/"
+  },
+  "secondary": {
+    "label_en":    "Request Consultation",
+    "label_es":    "Solicitar Consulta",
+    "label_en-ca": "Request Consultation",
+    "label_fr-ca": "Demander une consultation",
+    "href":        "/contact/"
+  },
+  "phone": "888-427-3973"
+}

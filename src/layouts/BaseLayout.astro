@@ -1,0 +1,69 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  locale?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = 'https://heatnglo.com/og-default.jpg',
+  locale = Astro.currentLocale ?? 'en',
+} = Astro.props;
+
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <link rel="alternate" hreflang="en-US"   href={`https://heatnglo.com${Astro.url.pathname.replace(/^\/(es|en-ca|fr-ca)/, '')}`} />
+    <link rel="alternate" hreflang="es-US"   href={`https://heatnglo.com/es${Astro.url.pathname.replace(/^\/(es|en-ca|fr-ca)/, '')}`} />
+    <link rel="alternate" hreflang="en-CA"   href={`https://heatnglo.com/en-ca${Astro.url.pathname.replace(/^\/(es|en-ca|fr-ca)/, '')}`} />
+    <link rel="alternate" hreflang="fr-CA"   href={`https://heatnglo.com/fr-ca${Astro.url.pathname.replace(/^\/(es|en-ca|fr-ca)/, '')}`} />
+    <link rel="alternate" hreflang="x-default" href={`https://heatnglo.com${Astro.url.pathname.replace(/^\/(es|en-ca|fr-ca)/, '')}`} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <meta name="theme-color" content="#0e0e0e" />
+    <meta name="color-scheme" content="light" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap"
+    />
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      if (typeof window !== 'undefined' && (window as Window & { inEditorMode?: boolean }).inEditorMode) {
+        import('../cloudcannon/registerComponents').catch((err) => {
+          console.warn('CloudCannon registerComponents failed to load:', err);
+        });
+      }
+    </script>
+  </body>
+</html>

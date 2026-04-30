@@ -36,9 +36,9 @@ This document locks every Phase 2 decision so build can begin without re-litigat
 - **Excluded locales:** es-MX (no dealer network), fr-FR (Parisian conventions wrong for Quebec), pt-BR (no market presence)
 
 ### 6. CMS
-- **Decision:** keep Sanity (current vendor) unless Phase 2 discovery surfaces a blocker
-- **Reason:** the existing content team is on it, the export path is clean, and switching CMS mid-rebuild is the highest-cost lowest-value change available — defer to a separate engagement if Heat & Glo wants to switch
-- **Alternate evaluation:** if Sanity blocks something (e.g., locale handling is awkward at the document model), CloudCannon is the fallback (we use it on UrVeeda/HNHSI/etc.) — needs Cash approval before swap
+- **Decision:** **CloudCannon** (agency stack standard).
+- **Migration approach (locked 2026-04-29 by David):** crawl + extract + improve. We do NOT request Sanity access from HHT. For each KEEP-disposition URL in the existing sitemap, Phase 5 fetches the live page, parses H1/title/meta/body copy, downloads creatives (currently on Bynder), uploads them to **Cloudinary DAM**, and writes a fresh CloudCannon collection entry that reads better than the source page (tighter copy, CRO-tightened CTAs, per-page schema).
+- **Why crawl-and-improve, not 1:1 import:** the rebuild's value is the upgrade, not the parity. Importing Sanity 1:1 reproduces the existing site's CRO + SEO weaknesses; crawling and rewriting per-page is what makes the rebuild "obviously stronger than what they ship today" (Phase 1 brief §Goals).
 
 ### 7. Hosting
 - **Decision:** Vercel (current vendor) — same logic as CMS
@@ -79,15 +79,17 @@ This document locks every Phase 2 decision so build can begin without re-litigat
 - **Rejected directions:** "Bold" (Corporate Authority slate-gray) and "Editorial" (Source Serif 4 magazine layout) — both deleted from Vercel
 - **Approved commit SHA:** TBD — set when initial repo push lands; tagged as `mockup-approved`
 
-## Open questions for the kickoff call (blocking — must resolve before Phase 2 build starts)
+## Open questions for the kickoff call (blocking — must resolve before Phase 5 content lands)
 
 1. **Lead-capture endpoint** — Salesforce, HubSpot, custom? (See §8.)
 2. **Dealer-locator vendor** — Bullseye, StoreLocator+, in-house? (See §9.)
-3. **Sanity studio access + content export** — read access to the existing dataset, or a JSON export we can import into a parallel project for staging.
-4. **DAM access (Bynder)** — confirm the URL pattern for transformed images stays stable; ideally read-only API access for the new build.
-5. **Promo / rebate eligibility per locale** — the `$650 gas-insert rebate` — is it valid for all four locales (US-EN, US-ES, CA-EN, CA-FR) at the same dollar/CAD value, or does CAD have a different rebate amount? Affects translated copy.
-6. **Existing analytics permissions** — GA4 property + Microsoft Clarity workspace access for the new domain.
-7. **Stellar by Heat & Glo callout** — the sister-brand link in top-right — does it stay (current behavior) or move to a dedicated `/stellar` landing page on the new site?
+3. **Promo / rebate eligibility per locale** — the `$650 gas-insert rebate` — is it valid for all four locales (US-EN, US-ES, CA-EN, CA-FR) at the same dollar/CAD value, or does CAD have a different rebate amount? Affects translated copy.
+4. **Existing analytics permissions** — GA4 property + Microsoft Clarity workspace access for the new domain.
+5. **Stellar by Heat & Glo callout** — the sister-brand link in top-right — does it stay (current behavior) or move to a dedicated `/stellar` landing page on the new site?
+
+**Resolved (locked decisions, no longer kickoff-blocking):**
+- ~~Sanity studio access~~ — not requested. Migration is crawl-and-improve per §6.
+- ~~Bynder DAM read access~~ — not required. Phase 5 downloads creatives during the crawl and uploads to our Cloudinary DAM.
 
 ## Non-questions (do not re-open)
 - Paradigm choice (match-and-elevate, locked)

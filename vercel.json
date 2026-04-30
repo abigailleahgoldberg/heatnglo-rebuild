@@ -1,0 +1,13 @@
+{
+  "redirects": [
+    { "source": "/architect/:path*",        "destination": "/pro/:path*",                                "permanent": true },
+    { "source": "/products/electric-inserts",  "destination": "/products/electric-fireplaces/inserts/", "permanent": true },
+    { "source": "/products/wood-inserts",      "destination": "/products/wood-fireplaces/inserts/",     "permanent": true },
+    { "source": "/products/outdoor-fire-pits", "destination": "/products/outdoor-fireplaces/fire-pits/", "permanent": true },
+    { "source": "/products/outdoor-gas-log-sets","destination": "/products/outdoor-fireplaces/log-sets/", "permanent": true },
+    { "source": "/owner-resources/recall-information", "destination": "/owner-resources/recalls/",     "permanent": true },
+    { "source": "/privacy-policy",             "destination": "/privacy/",                              "permanent": true },
+    { "source": "/terms-of-use",               "destination": "/terms/",                                "permanent": true },
+    { "source": "/fireplace-safety",           "destination": "/owner-resources/safety-screens/",       "permanent": true }
+  ]
+}
